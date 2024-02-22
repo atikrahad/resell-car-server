@@ -8,7 +8,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@cluster0.1lk0tsy.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -42,6 +42,13 @@ async function run() {
       
       res.send(gretePrice)
     });
+
+    app.get("/car/:id", async(req, res)=>{
+      const id = req.params.id
+      console.log(id);
+      const result = await CarsCollection.findOne({_id: new ObjectId(id)})
+      res.send(result)
+    })
 
     app.post("/car", async (req, res) => {
       const carInfo = req.body;
