@@ -24,6 +24,7 @@ async function run() {
   try {
     await client.connect();
     const CarsCollection = client.db("carsDB").collection("cars");
+    const CarcartCollection = client.db("carcartDB").collection("carcart");
 
     app.get("/resentcars", async (req, res) => {
       const resentcars = await CarsCollection.find()
@@ -55,6 +56,12 @@ async function run() {
       const result = await CarsCollection.insertOne(carInfo);
       res.send(result);
     });
+
+    app.post("/cart", async(req, res)=>{
+      const query = req.body;
+      const result = await CarcartCollection.insertOne(query)
+      res.send(result)
+    })
 
     await client.db("admin").command({ ping: 1 });
     console.log(
